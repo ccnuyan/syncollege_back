@@ -1,0 +1,20 @@
+{
+  "notice": "no comment allowed here!",
+  "restartable": "rs",
+  "ignore": [
+    ".git"
+  ],
+  "verbose": true,
+  "exec": "babel-node ./server/index",
+  "watch": [
+    "database/",
+    "config/",
+    "public/",
+    "api/",
+    "server/"
+  ],
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "ext": "js json"
+}
