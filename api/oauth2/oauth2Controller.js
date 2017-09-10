@@ -142,7 +142,7 @@ router.get('/qq/callback', (req, res, next) => {
 router.get('/:vender/callback', async (req, res) => {
   // const provider = req.oauth.provider;
   // const query = {};
-  const oauth2User = await req.context.pgPool.query('select * from membership.oauth2Users where unique_provider_id = $1 and provider = $2', [req.oauth.unique_provider_id, req.oauth.provider]); // eslint-disable-line
+  const oauth2User = await req.context.pgPool.query('select * from syncollege_db.oauth2Users where unique_provider_id = $1 and provider = $2', [req.oauth.unique_provider_id, req.oauth.provider]); // eslint-disable-line
   /*
   Result {
     command: 'SELECT',
@@ -165,7 +165,7 @@ router.get('/:vender/callback', async (req, res) => {
   */
   if (oauth2User.rowCount === 0) {
     // 无oauth登录记录
-    const ret = await req.context.pgPool.query('insert into membership.oauth2Users(unique_provider_id, provider, profile) values ($1,$2,$3) returning *', [req.oauth.unique_provider_id, req.oauth.provider, req.oauth.profile]); // eslint-disable-line
+    const ret = await req.context.pgPool.query('insert into syncollege_db.oauth2Users(unique_provider_id, provider, profile) values ($1,$2,$3) returning *', [req.oauth.unique_provider_id, req.oauth.provider, req.oauth.profile]); // eslint-disable-line
     /*
     Result {
       command: 'INSERT',
@@ -190,10 +190,10 @@ router.get('/:vender/callback', async (req, res) => {
     res.status(302).send();
   } else {
     // oauth 登录过且已绑定
-    const ret = await req.context.pgPool.query('select * from membership.oauth_authenticate($1, $2)', [req.oauth.provider, req.oauth.unique_provider_id]); // eslint-disable-line
+    const ret = await req.context.pgPool.query('select * from syncollege_db.oauth_authenticate($1, $2)', [req.oauth.provider, req.oauth.unique_provider_id]); // eslint-disable-line
     const loginInfo = ret.rows[0];
     const token = sign(req.oauth.provider, loginInfo);
-    await req.context.pgPool.query('select * from membership.add_login($1, $2, $3, $4)', [loginInfo.id, req.oauth.unique_provider_id, token, req.oauth.provider]);  // eslint-disable-line
+    await req.context.pgPool.query('select * from syncollege_db.add_login($1, $2, $3, $4)', [loginInfo.id, req.oauth.unique_provider_id, token, req.oauth.provider]);  // eslint-disable-line
     res.setHeader('location', `/#/user/oauth2/login/${token}`);
     res.status(302).send();
   }

@@ -13,7 +13,7 @@ describe('authentication', () => {
   before(async function init() {
     this.timeout(10000);
     pool = await helpers.initDb();
-    await pool.query('select * from membership.register($1, $2)', [
+    await pool.query('select * from syncollege_db.register($1, $2)', [
       params.username,
       params.password,
     ]).then((res) => {
@@ -26,7 +26,7 @@ describe('authentication', () => {
   describe('with a valid login', () => {
     let authResult = null;
     before(() => {
-      return pool.query('select * from membership.authenticate($1, $2)', [params.username, params.password])
+      return pool.query('select * from syncollege_db.authenticate($1, $2)', [params.username, params.password])
       .then((res) => {
         authResult = res.rows[0];
         return authResult;
@@ -40,7 +40,7 @@ describe('authentication', () => {
   describe('invalid login', () => {
     let authResult = null;
     before(() => {
-      return pool.query('select * from membership.authenticate($1, $2)', [params.username, 'password1'])
+      return pool.query('select * from syncollege_db.authenticate($1, $2)', [params.username, 'password1'])
       .then((res) => {
         authResult = res.rows[0];
         return authResult;

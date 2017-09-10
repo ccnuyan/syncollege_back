@@ -1,4 +1,4 @@
-set search_path = membership;
+set search_path = syncollege_db;
 
 create sequence id_sequence;
 create or replace function id_generator(out new_id bigint)
@@ -9,7 +9,7 @@ DECLARE
   now_ms bigint;
   shard_id int := 1;
 BEGIN
-  SET search_path = 'membership';
+  SET search_path = 'syncollege_db';
   SELECT nextval('id_sequence') %1024 INTO seq_id;
   SELECT FLOOR(EXTRACT(EPOCH FROM now()) * 1000) INTO now_ms;
   new_id := (now_ms - our_epoch) << 23;

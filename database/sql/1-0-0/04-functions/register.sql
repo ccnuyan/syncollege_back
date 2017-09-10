@@ -2,16 +2,16 @@ CREATE OR REPLACE FUNCTION register(
   un VARCHAR, 
   password VARCHAR, 
   oauth_user_id BIGINT DEFAULT NULL)
-RETURNS membership.login_info
+RETURNS syncollege_db.login_info
 as $$
 DECLARE
-  oauth_user membership.oauth2Users;
-  new_user membership.users;
+  oauth_user syncollege_db.oauth2Users;
+  new_user syncollege_db.users;
   token VARCHAR(64);
   success BOOLEAN DEFAULT FALSE;
   return_message VARCHAR(64);
 BEGIN
-  SET search_path=membership;
+  SET search_path=syncollege_db;
     
   IF NOT EXISTS (SELECT users.username FROM users WHERE users.username = un)
   THEN
@@ -57,7 +57,7 @@ BEGIN
     new_user.nickname, 
     new_user.role, 
     success,
-    return_message)::membership.login_info;
+    return_message)::syncollege_db.login_info;
 END;
 $$
 LANGUAGE PLPGSQL;
