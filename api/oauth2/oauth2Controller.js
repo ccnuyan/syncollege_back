@@ -100,7 +100,7 @@ router.get('/qq/callback', (req, res, next) => {
           return next(err3);
         }
 
-        /* //  console.log(bd3):
+        /*
           { ret: 0,
           msg: '',
           is_lost: 0,

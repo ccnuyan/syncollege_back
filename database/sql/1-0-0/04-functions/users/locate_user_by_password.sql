@@ -4,6 +4,6 @@ as $$
   set search_path=syncollege_db;
   select user_id from logins where
   provider_key = username and
-  provider_token = crypt(pass,provider_token);
+  provider_token = crypt(pass, provider_token);
 $$
 language sql;

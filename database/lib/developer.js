@@ -42,7 +42,8 @@ const install = async () => {
       return Promise.delay(30).then(() => {
         return pg.query(sqlObject.sql)
         .then(() => {
-          return console.log(`sql installed: ${path.relative(__dirname, sqlObject.file)}`); // eslint-disable-line
+          // console.log(`sql installed: ${path.relative(__dirname, sqlObject.file)}`); // eslint-disable-line
+          return true;
         })
         .catch((err) => {
           console.log(`*** error:${sqlObject.file} ***`); // eslint-disable-line
@@ -56,7 +57,7 @@ const install = async () => {
     });
   });
 
-  await leader.then(() => console.log('done')); // eslint-disable-line no-console
+  await leader.then(() => console.log('--------------------------------------ALL SQL INSTALLED')); // eslint-disable-line no-console
 };
 
 export default {
