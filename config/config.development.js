@@ -1,11 +1,8 @@
 export default {
   mode: 'development',
   port: 17000,
-  serviceBase: {
-    browser: '',
-    electron: 'http://www.syncollege.com',
-    native: 'http://www.syncollege.com',
-  },
+  qiniu_mode: 'direct',
+  serviceBase: 'http://www.syncollege.com/',
   auth: {
     jwt: {
       secret: '12345678',
@@ -30,5 +27,12 @@ export default {
     port: 5432,
     max: 10,
     idleTimeoutMillis: 30000,
+  },
+  qiniu: {
+    bucket: 'test',
+    ak: '-ep_FkVEcGngEskOY3VDYwToOcRkpQeaAv3cvnrZ',
+    sk: 'xlHeJJn4u5Ldn5reNI0l2ug5BxV7mDfDP66RAuaH',
+    callbackBase: 'http://www.syncollege.com/',
+    url: 'http://7xt1pi.com1.z0.glb.clouddn.com/',
   },
 };

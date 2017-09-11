@@ -100,5 +100,8 @@
         "always"
       ]
     }
+  },
+  "dependencies": {
+    "qiniu": "^7.0.8"
   }
 }

@@ -2,6 +2,7 @@ import oauth2Controller from './oauth2/oauth2Controller';
 
 import user from './user';
 import works from './works';
+import files from './files';
 
 export default (app, { pgPool }) => {
   // This is not api, just redirect
@@ -20,5 +21,11 @@ export default (app, { pgPool }) => {
   app.use('/works', (req, res, next) => {
     req.context = { pgPool };
     return works(req, res, next);
+  }); // notice here is use not route
+
+    // These are works apis
+  app.use('/files', (req, res, next) => {
+    req.context = { pgPool };
+    return files(req, res, next);
   }); // notice here is use not route
 };

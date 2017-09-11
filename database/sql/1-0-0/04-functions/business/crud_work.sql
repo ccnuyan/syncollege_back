@@ -132,7 +132,7 @@ BEGIN
 
     SELECT * FROM works WHERE id = wid AND creator_id = uid INTO update_work;
     success := TRUE;
-    return_message := 'Work upodated';
+    return_message := 'Work updated';
   ELSE
     success := FALSE;
     select 'The work created by this creator does not exist' INTO return_message;

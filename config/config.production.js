@@ -1,6 +1,8 @@
 export default {
   mode: 'development',
   port: 17000,
+  qiniu_mode: 'callback',
+  serviceBase: 'http://www.syncollege.com',
   auth: {
     jwt: {
       secret: '12345678',
@@ -25,5 +27,10 @@ export default {
     port: 5432,
     max: 10,
     idleTimeoutMillis: 30000,
+  },
+  qiniu: {
+    bucket: process.env.QINIU_BUCKET,
+    ak: process.env.QINIU_ACCESS_KEY,
+    sk: process.env.QINIU_SECRET_KEY,
   },
 };
