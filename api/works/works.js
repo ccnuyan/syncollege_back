@@ -13,10 +13,10 @@ const create_work = async (req, res) => {
       creator_id: req.user.id,
       ...work,
     }, req.context);
-    return res.send(ret);
+    return res.status(201).send(ret);
   } catch (err) {
     printError(err, __dirname);
-    return res.send({ success: false });
+    return res.status(400).send({ success: false });
   }
 };
 
@@ -29,7 +29,7 @@ const require_work = async (req, res) => {
     return res.send(ret);
   } catch (err) {
     printError(err, __dirname);
-    return res.send({ success: false });
+    return res.status(400).send({ success: false });
   }
 };
 
@@ -41,7 +41,7 @@ const require_created_works = async (req, res) => {
     return res.send(ret);
   } catch (err) {
     printError(err, __dirname);
-    return res.send({ success: false });
+    return res.status(400).send({ success: false });
   }
 };
 
@@ -51,7 +51,7 @@ const require_latest_works = async (req, res) => {
     return res.send(ret);
   } catch (err) {
     printError(err, __dirname);
-    return res.send({ success: false });
+    return res.status(400).send({ success: false });
   }
 };
 
@@ -61,7 +61,7 @@ const require_popular_works = async (req, res) => {
     return res.send(ret);
   } catch (err) {
     printError(err, __dirname);
-    return res.send({ success: false });
+    return res.status(400).send({ success: false });
   }
 };
 
@@ -80,7 +80,7 @@ const update_work = async (req, res) => {
     return res.send(ret);
   } catch (err) {
     printError(err, __dirname);
-    return res.send({ success: false });
+    return res.status(400).send({ success: false });
   }
 };
 
@@ -93,7 +93,7 @@ const delete_work = async (req, res) => {
     return res.send(ret);
   } catch (err) {
     printError(err, __dirname);
-    return res.send({ success: false });
+    return res.status(400).send({ success: false });
   }
 };
 

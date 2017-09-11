@@ -7,10 +7,11 @@ const router = Router();
 
 router.get('', files.require_file);
 router.post('', auth, files.create_file);
-router.put('', auth, files.update_file);
+router.put('', auth, files.update_file_title);
 router.delete('', auth, files.delete_file);
 
-router.get('/uploaded', auth, files.require_created_files);
-
+router.put('/upload_callback', auth, files.update_file_status);
+router.get('/uploaded', auth, files.require_uploaded_files);
+router.get('/access', files.access_file);
 
 export default router;

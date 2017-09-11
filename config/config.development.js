@@ -1,7 +1,6 @@
 export default {
   mode: 'development',
   port: 17000,
-  qiniu_mode: 'direct',
   serviceBase: 'http://www.syncollege.com/',
   auth: {
     jwt: {
@@ -30,8 +29,9 @@ export default {
   },
   qiniu: {
     bucket: 'test',
-    ak: '-ep_FkVEcGngEskOY3VDYwToOcRkpQeaAv3cvnrZ',
-    sk: 'xlHeJJn4u5Ldn5reNI0l2ug5BxV7mDfDP66RAuaH',
+    mode: 'direct',
+    ak: 'JK2nEgwnvAoWh4e7hWyUX3Iuc6fs8-6vL5xNu-kq',
+    sk: 'LRKdhh_0T4l_w6q1rbA2T-rNolTogMMjXihigG8x',
     callbackBase: 'http://www.syncollege.com/',
     url: 'http://7xt1pi.com1.z0.glb.clouddn.com/',
   },

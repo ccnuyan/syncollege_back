@@ -6,7 +6,7 @@ CREATE TYPE crud_file_info AS(
   filename VARCHAR,
   etag VARCHAR,
   mime VARCHAR,
-  size BIGINT,
+  size INTEGER,
   uploaded_at TIMESTAMPTZ,
   file_status INT,
   success BOOLEAN,
@@ -41,7 +41,6 @@ BEGIN
 END;
 $$
 LANGUAGE PLPGSQL;
-
 
 CREATE OR REPLACE FUNCTION create_file(
   uid BIGINT, -- username
@@ -96,7 +95,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION update_file(
+CREATE OR REPLACE FUNCTION update_file_title(
   uid BIGINT, -- username
   fid BIGINT, -- fileid
   tt VARCHAR(256))
@@ -112,6 +111,38 @@ BEGIN
   IF EXISTS (SELECT id FROM files WHERE id = fid and uploader_id = uid)
   THEN
     UPDATE files SET title = tt 
+    WHERE id = fid;
+
+    SELECT * FROM files WHERE id = fid AND uploader_id = uid INTO update_file;
+    success := TRUE;
+    return_message := 'File updated';
+  ELSE
+    success := FALSE;
+    select 'The file created by this uploader does not exist' INTO return_message;
+  END IF;
+  return syncollege_db.generate_file_crud_result(update_file, success, return_message);
+END;
+$$
+LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION update_file_status(
+  uid BIGINT, -- username
+  fid BIGINT, -- fileid
+  et VARCHAR,
+  mm VARCHAR,
+  sz INTEGER)
+RETURNS syncollege_db.crud_file_info
+as $$
+DECLARE
+  update_file syncollege_db.files;
+  success BOOLEAN;
+  return_message VARCHAR(64);
+BEGIN
+  SET search_path=syncollege_db;
+
+  IF EXISTS (SELECT id FROM files WHERE id = fid and uploader_id = uid)
+  THEN
+    UPDATE files SET size=sz, etag=et, mime=mm, uploaded_at=now(), status=1
     WHERE id = fid;
 
     SELECT * FROM files WHERE id = fid AND uploader_id = uid INTO update_file;

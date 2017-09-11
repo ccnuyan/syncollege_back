@@ -5,7 +5,7 @@ create table files(
   title varchar(256),
   etag varchar(256),
   mime varchar(256),
-  size varchar(256),
+  size integer,
   uploaded_at timestamptz default now() not null,
-  status int default 0 -- 0:luanched, 1:uploaded, -1 removed
+  status integer default 0 -- 0:luanched, 1:uploaded, -1 removed
 );
