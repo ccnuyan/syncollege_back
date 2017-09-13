@@ -80,7 +80,7 @@ const update_file_status = async (req, res) => {
   try {
     const ret = await fileServices.update_file_status({
       uploader_id: req.user.id,
-      file_id: req.body.key,
+      file_id: req.body.id,
       ...query,
     }, req.context);
     return res.send(ret);

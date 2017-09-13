@@ -23,13 +23,14 @@ const requestUpload = (file_id) => {
   if (conf.qiniu.mode === 'callback') {
     putPolicy = new qiniu.rs.PutPolicy({
       scope: conf.qiniu.bucket,
-      callbackUrl: `${conf.serviceBase}api/{qiniu/upload_callback/`,
+      callbackUrl: `${conf.serviceBase}api/files/upload_callback/`,
       callbackBodyType: 'application/json',
       callbackBody: `{
       "size":$(fsize),
       "mime":$(mimeType),
       "key":$(key),
       "etag":$(etag),
+      "id":$(x:id),
       "success":true
     }` });
   } else {
@@ -40,12 +41,13 @@ const requestUpload = (file_id) => {
       "mime":$(mimeType),
       "key":$(key),
       "etag":$(etag),
+      "id":$(x:id),
       "success":true
     }` });
   }
   return {
     token: putPolicy.uploadToken(mac),
-    key: file_id,
+    id: file_id,
   };
 };
 
