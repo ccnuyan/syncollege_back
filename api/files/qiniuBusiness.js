@@ -29,7 +29,8 @@ const requestUpload = (file_id) => {
       "size":$(fsize),
       "mime":$(mimeType),
       "key":$(key),
-      "etag":$(etag)
+      "etag":$(etag),
+      "success":true
     }` });
   } else {
     putPolicy = new qiniu.rs.PutPolicy({
@@ -38,7 +39,8 @@ const requestUpload = (file_id) => {
       "size":$(fsize),
       "mime":$(mimeType),
       "key":$(key),
-      "etag":$(etag)
+      "etag":$(etag),
+      "success":true
     }` });
   }
   return {

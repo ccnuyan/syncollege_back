@@ -15,6 +15,7 @@ const update_file_title = async ({ uploader_id, file_id, title }, { pgPool }) =>
   return ret.rows[0];
 };
 const update_file_status = async ({ uploader_id, file_id, etag, mime, size }, { pgPool }) => {
+  console.log({ uploader_id, file_id, etag, mime, size });
   const ret = await pgPool.query('select * from syncollege_db.update_file_status($1, $2, $3, $4, $5)', [uploader_id, file_id, etag, mime, size]);
   return ret.rows[0];
 };

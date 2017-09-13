@@ -8,7 +8,7 @@ CREATE TYPE crud_file_info AS(
   mime VARCHAR,
   size INTEGER,
   uploaded_at TIMESTAMPTZ,
-  file_status INT,
+  file_status INTEGER,
   success BOOLEAN,
   message VARCHAR
 );
