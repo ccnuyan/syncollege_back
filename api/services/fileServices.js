@@ -11,11 +11,10 @@ const require_uploaded_files = async ({ uploader_id }, { pgPool }) => {
   return ret.rows;
 };
 const update_file_title = async ({ uploader_id, file_id, title }, { pgPool }) => {
-  const ret = await pgPool.query('select * from syncollege_db.update_file_title($1, $2, $3, $4, $5)', [uploader_id, file_id, title]);
+  const ret = await pgPool.query('select * from syncollege_db.update_file_title($1, $2, $3)', [uploader_id, file_id, title]);
   return ret.rows[0];
 };
 const update_file_status = async ({ uploader_id, file_id, etag, mime, size }, { pgPool }) => {
-  console.log({ uploader_id, file_id, etag, mime, size });
   const ret = await pgPool.query('select * from syncollege_db.update_file_status($1, $2, $3, $4, $5)', [uploader_id, file_id, etag, mime, size]);
   return ret.rows[0];
 };

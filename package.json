@@ -102,6 +102,9 @@
     }
   },
   "dependencies": {
-    "qiniu": "^7.0.8"
+    "isomorphic-fetch": "^2.2.1",
+    "jsdom": "^11.2.0",
+    "qiniu": "^7.0.8",
+    "request": "^2.81.0"
   }
 }

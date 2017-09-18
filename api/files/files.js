@@ -59,7 +59,7 @@ const update_file_title = async (req, res) => {
   };
 
   try {
-    const ret = await fileServices.update_file({
+    const ret = await fileServices.update_file_title({
       uploader_id: req.user.id,
       file_id: req.body.file_id,
       ...query,

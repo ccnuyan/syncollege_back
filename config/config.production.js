@@ -1,8 +1,8 @@
 export default {
   mode: 'development',
   port: 17000,
-  qiniu_mode: 'callback',
-  serviceBase: 'http://www.syncollege.com',
+  qiniu_bucket: '7xt1pi.com1.z0.glb.clouddn.com',
+  serviceBase: 'http://www.syncollege.com/',
   auth: {
     jwt: {
       secret: '12345678',
@@ -23,14 +23,17 @@ export default {
   pg: {
     user: 'postgres',
     database: 'postgres',
-    host: 'localhost',
+    host: '139.196.193.252',
     port: 5432,
     max: 10,
     idleTimeoutMillis: 30000,
   },
   qiniu: {
-    bucket: process.env.QINIU_BUCKET,
-    ak: process.env.QINIU_ACCESS_KEY,
-    sk: process.env.QINIU_SECRET_KEY,
+    bucket: 'test',
+    mode: 'direct',
+    ak: 'JK2nEgwnvAoWh4e7hWyUX3Iuc6fs8-6vL5xNu-kq',
+    sk: 'LRKdhh_0T4l_w6q1rbA2T-rNolTogMMjXihigG8x',
+    callbackBase: 'http://www.syncollege.com/',
+    url: 'http://7xt1pi.com1.z0.glb.clouddn.com/',
   },
 };

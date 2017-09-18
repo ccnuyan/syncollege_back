@@ -23,7 +23,6 @@ const create_work = async (req, res) => {
 const require_work = async (req, res) => {
   try {
     const ret = await workServices.require_work({
-      creator_id: req.user.id,
       work_id: req.query.work_id,
     }, req.context);
     return res.send(ret);

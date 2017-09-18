@@ -1,6 +1,7 @@
 export default {
   mode: 'development',
   port: 17000,
+  qiniu_bucket: '7xt1pi.com1.z0.glb.clouddn.com',
   serviceBase: 'http://www.syncollege.com/',
   auth: {
     jwt: {
