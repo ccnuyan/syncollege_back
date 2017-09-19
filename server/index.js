@@ -32,7 +32,9 @@ try {
     // api middleware
     app.use(byPassAuth(pgPool));
 
-    app.use(delay(200, 500));
+    if (config.mode === 'development') {
+      app.use(delay(200, 500));
+    }
     api(app, { pgPool });
 
     app.listen(PORT, (err) => {
