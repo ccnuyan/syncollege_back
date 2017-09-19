@@ -126,7 +126,6 @@ $$
 LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION update_file_status(
-  uid BIGINT, -- username
   fid BIGINT, -- fileid
   et VARCHAR,
   mm VARCHAR,
@@ -140,12 +139,12 @@ DECLARE
 BEGIN
   SET search_path=syncollege_db;
 
-  IF EXISTS (SELECT id FROM files WHERE id = fid and uploader_id = uid)
+  IF EXISTS (SELECT id FROM files WHERE id = fid)
   THEN
     UPDATE files SET size=sz, etag=et, mime=mm, uploaded_at=now(), status=1
     WHERE id = fid;
 
-    SELECT * FROM files WHERE id = fid AND uploader_id = uid INTO update_file;
+    SELECT * FROM files WHERE id = fid INTO update_file;
     success := TRUE;
     return_message := 'File updated';
   ELSE
