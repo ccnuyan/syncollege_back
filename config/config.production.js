@@ -30,7 +30,7 @@ export default {
   },
   qiniu: {
     bucket: 'test',
-    mode: 'direct',
+    mode: 'callback',
     ak: 'JK2nEgwnvAoWh4e7hWyUX3Iuc6fs8-6vL5xNu-kq',
     sk: 'LRKdhh_0T4l_w6q1rbA2T-rNolTogMMjXihigG8x',
     callbackBase: 'http://www.syncollege.com/',

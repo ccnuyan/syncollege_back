@@ -30,8 +30,7 @@ const requestUpload = (file_id) => {
       "mime":$(mimeType),
       "key":$(key),
       "etag":$(etag),
-      "id":$(x:id),
-      "success":true
+      "id":$(x:id)
     }` });
   } else {
     putPolicy = new qiniu.rs.PutPolicy({
