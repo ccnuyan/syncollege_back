@@ -39,6 +39,17 @@ create type login_info as(
   success boolean,
   message varchar
 );
+create table files(
+  id bigint primary key not null default id_generator(),
+  uploader_id bigint NOT NULL,
+  filename varchar(256) NOT NULL,
+  title varchar(256),
+  etag varchar(256),
+  mime varchar(256),
+  size integer,
+  uploaded_at timestamptz default now() not null,
+  status integer default 0 -- 0:luanched, 1:uploaded, -1 removed
+);
 create table works(
   id bigint primary key not null default id_generator(),
   
@@ -92,6 +103,193 @@ create table users(
   nickname varchar(64),
   gender varchar(16)
 );
+CREATE TYPE crud_file_info AS(
+  id BIGINT,
+  uploader_id BIGINT,
+  uploader_email VARCHAR,
+  title VARCHAR,
+  filename VARCHAR,
+  etag VARCHAR,
+  mime VARCHAR,
+  size INTEGER,
+  uploaded_at TIMESTAMPTZ,
+  file_status INTEGER,
+  success BOOLEAN,
+  message VARCHAR
+);
+
+CREATE OR REPLACE FUNCTION generate_file_crud_result(
+  file syncollege_db.files,
+  success BOOLEAN,
+  message VARCHAR)
+RETURNS syncollege_db.crud_file_info
+as $$
+DECLARE
+  uploader_email varchar;
+BEGIN
+  SET search_path=syncollege_db;
+  SELECT username FROM users WHERE id = file.uploader_id into uploader_email;
+  return (
+    file.id,
+    file.uploader_id, 
+    uploader_email, 
+    file.title, 
+    file.filename,
+    file.etag,
+    file.mime,
+    file.size,
+    file.uploaded_at,
+    file.status,
+    success, 
+    message
+  )::syncollege_db.crud_file_info;
+END;
+$$
+LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION create_file(
+  uid BIGINT, -- username
+  filename VARCHAR(256)) --content
+RETURNS syncollege_db.crud_file_info
+as $$
+DECLARE
+  new_file syncollege_db.files;
+  success BOOLEAN;
+  return_message VARCHAR(64);
+BEGIN
+  SET search_path=syncollege_db;
+    
+  IF EXISTS (SELECT users.id FROM users WHERE users.id = uid)
+  THEN
+    INSERT INTO files(uploader_id, filename)
+    VALUES (uid, filename)
+    RETURNING * INTO new_file;
+    success := TRUE;
+    return_message := 'New file created';
+  ELSE
+    success := FALSE;
+    SELECT 'This user does not exist' INTO return_message;
+  END IF;
+  return syncollege_db.generate_file_crud_result(new_file, success, return_message);
+END;
+$$
+LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION require_file(fid BIGINT)
+RETURNS syncollege_db.crud_file_info
+as $$
+DECLARE
+  require_file syncollege_db.files;
+  success BOOLEAN;
+  return_message VARCHAR(64);
+BEGIN
+  SET search_path=syncollege_db;
+
+  SELECT * FROM files WHERE id = fid into require_file;
+
+  IF require_file.id IS NOT NULL
+  THEN
+    success := TRUE;
+    return_message := 'Required file found';
+  ELSE
+    success := FALSE;
+    select 'This file does not exist' INTO return_message;
+  END IF;
+  return syncollege_db.generate_file_crud_result(require_file, success, return_message);
+END;
+$$
+LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION update_file_title(
+  uid BIGINT, -- username
+  fid BIGINT, -- fileid
+  tt VARCHAR(256))
+RETURNS syncollege_db.crud_file_info
+as $$
+DECLARE
+  update_file syncollege_db.files;
+  success BOOLEAN;
+  return_message VARCHAR(64);
+BEGIN
+  SET search_path=syncollege_db;
+
+  IF EXISTS (SELECT id FROM files WHERE id = fid and uploader_id = uid)
+  THEN
+    UPDATE files SET title = tt 
+    WHERE id = fid;
+
+    SELECT * FROM files WHERE id = fid AND uploader_id = uid INTO update_file;
+    success := TRUE;
+    return_message := 'File updated';
+  ELSE
+    success := FALSE;
+    select 'The file created by this uploader does not exist' INTO return_message;
+  END IF;
+  return syncollege_db.generate_file_crud_result(update_file, success, return_message);
+END;
+$$
+LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION update_file_status(
+  uid BIGINT, -- username
+  fid BIGINT, -- fileid
+  et VARCHAR,
+  mm VARCHAR,
+  sz INTEGER)
+RETURNS syncollege_db.crud_file_info
+as $$
+DECLARE
+  update_file syncollege_db.files;
+  success BOOLEAN;
+  return_message VARCHAR(64);
+BEGIN
+  SET search_path=syncollege_db;
+
+  IF EXISTS (SELECT id FROM files WHERE id = fid and uploader_id = uid)
+  THEN
+    UPDATE files SET size=sz, etag=et, mime=mm, uploaded_at=now(), status=1
+    WHERE id = fid;
+
+    SELECT * FROM files WHERE id = fid AND uploader_id = uid INTO update_file;
+    success := TRUE;
+    return_message := 'File updated';
+  ELSE
+    success := FALSE;
+    select 'The file created by this uploader does not exist' INTO return_message;
+  END IF;
+  return syncollege_db.generate_file_crud_result(update_file, success, return_message);
+END;
+$$
+LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION delete_file(
+  uid BIGINT, -- username
+  fid BIGINT) -- fileid
+RETURNS syncollege_db.crud_file_info
+as $$
+DECLARE
+  deleted_file syncollege_db.files;
+  success BOOLEAN;
+  return_message VARCHAR(64);
+BEGIN
+  SET search_path=syncollege_db;
+
+  IF EXISTS (SELECT * FROM files WHERE files.id = fid and files.uploader_id = uid)
+  THEN
+    DELETE FROM files
+    WHERE files.id = fid
+    RETURNING * INTO deleted_file;
+    success := TRUE;
+    return_message := 'File deleted';
+  ELSE
+    success := FALSE;
+    SELECT 'The file created by this uploader does not exist' INTO return_message;
+  END IF;
+
+  return syncollege_db.generate_file_crud_result(deleted_file, success, return_message);
+END;
+$$
+LANGUAGE PLPGSQL;
 CREATE TYPE crud_work_info AS(
   id BIGINT,
   creator_id BIGINT,
@@ -226,7 +424,7 @@ BEGIN
 
     SELECT * FROM works WHERE id = wid AND creator_id = uid INTO update_work;
     success := TRUE;
-    return_message := 'Work upodated';
+    return_message := 'Work updated';
   ELSE
     success := FALSE;
     select 'The work created by this creator does not exist' INTO return_message;
@@ -525,6 +723,10 @@ $$
 LANGUAGE PLPGSQL;
 ALTER TABLE oauth2Users
 ADD CONSTRAINT provider_key UNIQUE (provider, unique_provider_id);
+ALTER TABLE files
+ADD CONSTRAINT user_files
+FOREIGN KEY (uploader_id) REFERENCES users(id)
+ON DELETE CASCADE;
 ALTER TABLE logins
 ADD CONSTRAINT user_logins
 FOREIGN KEY (user_id) REFERENCES users(id)
@@ -532,4 +734,8 @@ ON DELETE CASCADE;
 ALTER TABLE oauth2Users
 ADD CONSTRAINT user_oauth2Users
 FOREIGN KEY (user_id) REFERENCES users(id)
+ON DELETE CASCADE;
+ALTER TABLE works
+ADD CONSTRAINT user_works
+FOREIGN KEY (creator_id) REFERENCES users(id)
 ON DELETE CASCADE;
