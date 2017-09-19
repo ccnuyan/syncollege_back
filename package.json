@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "syncollege_back",
   "scripts": {
-    "start": "cross-env NODE_ENV=production && babel-node ./server/index",
+    "start": "babel-node ./server/index",
     "eslint": "eslint --ignore-path .eslintignore ./**/*.js",
     "db-dev": "cross-env NODE_ENV=development && nodemon --config nodemon/nodemon.database.json --delay 3000ms",
     "db-build": "babel-node ./database/index build",
