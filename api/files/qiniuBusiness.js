@@ -23,7 +23,7 @@ const requestUpload = (file_id) => {
   if (conf.qiniu.mode === 'callback') {
     putPolicy = new qiniu.rs.PutPolicy({
       scope: conf.qiniu.bucket,
-      callbackUrl: `${conf.serviceBase}api/files/upload_callback/`,
+      callbackUrl: `${conf.serviceBase}api/files/upload_callback`,
       callbackBodyType: 'application/json',
       callbackBody: `{
       "size":$(fsize),
