@@ -3,13 +3,6 @@ import builder from './lib/builder';
 import developer from './lib/developer';
 /* eslint-disable no-console */
 
-/* rotate the console. */
-const lines = process.stdout.getWindowSize()[1];
-for (let i = 0; i < lines; i += 1) {
-  console.log('\r\n');
-}
-/* rotate the console. */
-
 program
   .command('dev')
   .description('Build the sql file for our project')

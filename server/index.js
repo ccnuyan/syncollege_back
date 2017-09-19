@@ -8,7 +8,7 @@ import { pg } from '../database/connector';
 import byPassAuth from './middleware/byPassAuth';
 import crossDomain from './middleware/crossDomain';
 import api from '../api/';
-import './globals';
+import '../globals';
 
 const app = express();
 

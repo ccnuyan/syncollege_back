@@ -1,9 +1,9 @@
 create or replace function locate_user_by_password(username varchar, pass varchar)
 returns bigint
 as $$
-  set search_path=membership;
+  set search_path=syncollege_db;
   select user_id from logins where
   provider_key = username and
-  provider_token = crypt(pass,provider_token);
+  provider_token = crypt(pass, provider_token);
 $$
 language sql;

@@ -5,15 +5,15 @@ CREATE or REPLACE FUNCTION authenticate(
   prov VARCHAR DEFAULT 'local',   -- 'local'  / 'token' / 'qq'
   oauth_user_id BIGINT DEFAULT NULL -- if provided, use a oauth binding mode
 )
-RETURNS membership.login_info AS $$
+RETURNS syncollege_db.login_info AS $$
 DECLARE
-  oauth_user membership.oauth2Users;
-  found_user membership.users;
+  oauth_user syncollege_db.oauth2Users;
+  found_user syncollege_db.users;
   return_message VARCHAR(50);
   success BOOLEAN := FALSE;
   found_id BIGINT;
 BEGIN
-  SET search_path=membership;
+  SET search_path=syncollege_db;
   --find the user by token/provider and username
 
   IF (prov = 'local') THEN
@@ -57,7 +57,7 @@ BEGIN
     found_user.gender, 
     found_user.role,  
     success, 
-    return_message)::membership.login_info;
+    return_message)::syncollege_db.login_info;
 END;
 $$
 language plpgsql;
@@ -68,14 +68,14 @@ CREATE or REPLACE FUNCTION oauth_authenticate(
   input_provider_id VARCHAR
 )
 
-RETURNS membership.login_info AS $$
+RETURNS syncollege_db.login_info AS $$
 DECLARE
   return_message VARCHAR(50);
   success BOOLEAN := FALSE;
-  found_user membership.users;
+  found_user syncollege_db.users;
   found_id BIGINT;
 BEGIN
-  SET search_path=membership;
+  SET search_path=syncollege_db;
   --find the user by token/provider and un
 
   SELECT user_id FROM oauth2Users WHERE
@@ -100,7 +100,7 @@ BEGIN
     found_user.gender, 
     found_user.role,  
     success, 
-    return_message)::membership.login_info;
+    return_message)::syncollege_db.login_info;
 END;
 $$
 LANGUAGE PLPGSQL;

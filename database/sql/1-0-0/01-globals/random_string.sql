@@ -1,4 +1,4 @@
-set search_path = membership;
+set search_path = syncollege_db;
 
 create or replace function random_string(len int default 36)
 returns text
