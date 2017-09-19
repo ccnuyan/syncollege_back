@@ -77,11 +77,9 @@ const update_file_status = async (req, res) => {
     mime: req.body.mime,
     size: req.body.size,
   };
-  console.log(req.body);
   try {
     const ret = await fileServices.update_file_status({
-      // uploader_id: req.user.id,
-      file_id: req.body.id,
+      file_id: parseInt(req.body.id),
       ...query,
     }, req.context);
     return res.send(ret);
