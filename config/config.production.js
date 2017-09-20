@@ -1,5 +1,5 @@
 export default {
-  mode: 'development',
+  mode: 'production',
   port: 17000,
   qiniu_bucket: '7xt1pi.com1.z0.glb.clouddn.com',
   serviceBase: 'http://www.syncollege.com/',
@@ -24,13 +24,13 @@ export default {
     user: 'postgres',
     database: 'postgres',
     host: '139.196.193.252',
-    port: 5432,
+    port: 6000,
     max: 10,
     idleTimeoutMillis: 30000,
   },
   qiniu: {
     bucket: 'test',
-    mode: 'direct',
+    mode: 'callback',
     ak: 'JK2nEgwnvAoWh4e7hWyUX3Iuc6fs8-6vL5xNu-kq',
     sk: 'LRKdhh_0T4l_w6q1rbA2T-rNolTogMMjXihigG8x',
     callbackBase: 'http://www.syncollege.com/',

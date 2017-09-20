@@ -23,6 +23,20 @@ const create_work = async (req, res) => {
 const require_work = async (req, res) => {
   try {
     const ret = await workServices.require_work({
+      work_id:
+      req.query.work_id,
+    }, req.context);
+    return res.send(ret);
+  } catch (err) {
+    printError(err, __dirname);
+    return res.status(400).send({ success: false });
+  }
+};
+
+const require_created_work = async (req, res) => {
+  try {
+    const ret = await workServices.require_created_work({
+      creator_id: req.query.creator_id || req.user.id,
       work_id: req.query.work_id,
     }, req.context);
     return res.send(ret);
@@ -99,6 +113,7 @@ const delete_work = async (req, res) => {
 export default {
   create_work,
   require_work,
+  require_created_work,
   require_created_works,
   require_popular_works,
   require_latest_works,

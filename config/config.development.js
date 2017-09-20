@@ -28,6 +28,14 @@ export default {
     max: 10,
     idleTimeoutMillis: 30000,
   },
+  // pg: {
+  //   user: 'postgres',
+  //   database: 'postgres',
+  //   host: '139.196.193.252',
+  //   port: 6000,
+  //   max: 10,
+  //   idleTimeoutMillis: 30000,
+  // },
   qiniu: {
     bucket: 'test',
     mode: 'direct',

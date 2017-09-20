@@ -1,7 +1,10 @@
 import program from 'commander';
 import builder from './lib/builder';
 import developer from './lib/developer';
+import '../globals';
 /* eslint-disable no-console */
+
+global.report();
 
 program
   .command('dev')
