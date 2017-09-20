@@ -8,7 +8,7 @@ import { pg } from '../database/connector';
 import byPassAuth from './middleware/byPassAuth';
 import crossDomain from './middleware/crossDomain';
 import api from '../api/';
-import './globals';
+import '../globals';
 
 const app = express();
 
@@ -22,8 +22,13 @@ try {
     const pgPool = await pg.connect()
       .catch(err => global.printError(err, __dirname));
 
+    if (config.mode === 'development') {
+      app.use(delay(200, 500));
+    } else {
+      app.use(compression());
+    }
+
     app.use(crossDomain);
-    app.use(compression());
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({
       extended: true,
@@ -31,8 +36,6 @@ try {
 
     // api middleware
     app.use(byPassAuth(pgPool));
-
-    app.use(delay(200, 500));
     api(app, { pgPool });
 
     app.listen(PORT, (err) => {

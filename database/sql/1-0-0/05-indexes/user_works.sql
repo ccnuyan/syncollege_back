@@ -1,0 +1,4 @@
+ALTER TABLE works
+ADD CONSTRAINT user_works
+FOREIGN KEY (creator_id) REFERENCES users(id)
+ON DELETE CASCADE;

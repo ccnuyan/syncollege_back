@@ -1,8 +1,8 @@
-drop schema if exists membership CASCADE;
+drop schema if exists syncollege_db CASCADE;
 
-create schema membership;
-set search_path = membership;
+create schema syncollege_db;
+set search_path = syncollege_db;
 
 select 'Schema initialized' as result;
 
-create extension if not exists pgcrypto with schema membership;
+create extension if not exists pgcrypto with schema syncollege_db;

@@ -4,7 +4,7 @@ import { pg } from '../../database/connector';
 
 // import byPassAuth from './middleware/byPassAuth';
 
-import './globals';
+import '../../globals';
 
 import api from '../';
 

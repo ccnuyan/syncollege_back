@@ -17,7 +17,7 @@ const loadFiles = () => {
     nosort: true,
   });
   // set search_path at first
-  const result = ['set search_path=membership;'];
+  const result = ['set search_path = syncollege_db;'];
   files.forEach((file) => {
     if (!_.endsWith(path.parse(file).name, '.dev')) {
       const sql = fs.readFileSync(file, {

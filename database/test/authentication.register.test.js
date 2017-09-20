@@ -18,7 +18,7 @@ describe('registration', () => {
   describe('with valid creds', () => {
     let regResult = null;
     before(async () => {
-      return pool.query('select * from membership.register($1, $2)', [
+      return pool.query('select * from syncollege_db.register($1, $2)', [
         params.username,
         params.password,
       ]).then((res) => {
@@ -42,7 +42,7 @@ describe('registration', () => {
   describe('trying an existing user', () => {
     let regResult = null;
     before(async () => {
-      return pool.query('select * from membership.register($1, $2)', [
+      return pool.query('select * from syncollege_db.register($1, $2)', [
         params.username,
         params.password,
       ]).then((res) => {
